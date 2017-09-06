@@ -1040,18 +1040,19 @@ return $item;
 null,
 CacheItem::class
 );
+$getId = function ($key) { return $this->getId((string) $key); };
 $this->mergeByLifetime = \Closure::bind(
-function ($deferred, $namespace, &$expiredIds) {
+function ($deferred, $namespace, &$expiredIds) use ($getId) {
 $byLifetime = array();
 $now = time();
 $expiredIds = array();
 foreach ($deferred as $key => $item) {
 if (null === $item->expiry) {
-$byLifetime[0 < $item->defaultLifetime ? $item->defaultLifetime : 0][$namespace.$key] = $item->value;
+$byLifetime[0 < $item->defaultLifetime ? $item->defaultLifetime : 0][$getId($key)] = $item->value;
 } elseif ($item->expiry > $now) {
-$byLifetime[$item->expiry - $now][$namespace.$key] = $item->value;
+$byLifetime[$item->expiry - $now][$getId($key)] = $item->value;
 } else {
-$expiredIds[] = $namespace.$key;
+$expiredIds[] = $getId($key);
 }
 }
 return $byLifetime;
@@ -2380,6 +2381,7 @@ trait PhpArrayTrait
 private $file;
 private $values;
 private $fallbackPool;
+private $zendDetectUnicode;
 public function warmUp(array $values)
 {
 if (file_exists($this->file)) {
@@ -2442,7 +2444,7 @@ file_put_contents($tmpFile, $dump);
 @chmod($tmpFile, 0666 & ~umask());
 unset($serialized, $unserialized, $value, $dump);
 @rename($tmpFile, $this->file);
-$this->values = (include $this->file) ?: array();
+$this->initialize();
 }
 public function clear()
 {
@@ -2452,7 +2454,16 @@ return $this->fallbackPool->clear() && $cleared;
 }
 private function initialize()
 {
+if ($this->zendDetectUnicode) {
+$zmb = ini_set('zend.detect_unicode', 0);
+}
+try {
 $this->values = file_exists($this->file) ? (include $this->file ?: array()) : array();
+} finally {
+if ($this->zendDetectUnicode) {
+ini_set('zend.detect_unicode', $zmb);
+}
+}
 }
 }
 }
@@ -2471,6 +2482,7 @@ public function __construct($file, AdapterInterface $fallbackPool)
 {
 $this->file = $file;
 $this->fallbackPool = $fallbackPool;
+$this->zendDetectUnicode = ini_get('zend.detect_unicode');
 $this->createCacheItem = \Closure::bind(
 function ($key, $value, $isHit) {
 $item = new CacheItem();
@@ -3286,11 +3298,13 @@ protected function getEnv($name)
 if (isset($this->envCache[$name]) || array_key_exists($name, $this->envCache)) {
 return $this->envCache[$name];
 }
+if (isset($_SERVER[$name]) && 0 !== strpos($name,'HTTP_')) {
+return $this->envCache[$name] = $_SERVER[$name];
+}
 if (isset($_ENV[$name])) {
 return $this->envCache[$name] = $_ENV[$name];
 }
-if (false !== $env = getenv($name)) {
-return $this->envCache[$name] = $env;
+if (false !== ($env = getenv($name)) && null !== $env) { return $this->envCache[$name] = $env;
 }
 if (!$this->hasParameter("env($name)")) {
 throw new EnvNotFoundException($name);
@@ -4732,36 +4746,6 @@ if ($controller instanceof AbstractController && null !== $previousContainer = $
 $controller->setContainer($previousContainer);
 }
 return $controller;
-}
-}
-}
-namespace Symfony\Component\Security\Http
-{
-use Symfony\Component\HttpFoundation\Request;
-interface AccessMapInterface
-{
-public function getPatterns(Request $request);
-}
-}
-namespace Symfony\Component\Security\Http
-{
-use Symfony\Component\HttpFoundation\RequestMatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
-class AccessMap implements AccessMapInterface
-{
-private $map = array();
-public function add(RequestMatcherInterface $requestMatcher, array $attributes = array(), $channel = null)
-{
-$this->map[] = array($requestMatcher, $attributes, $channel);
-}
-public function getPatterns(Request $request)
-{
-foreach ($this->map as $elements) {
-if (null === $elements[0] || $elements[0]->matches($request)) {
-return array($elements[1], $elements[2]);
-}
-}
-return array(null, null);
 }
 }
 }
@@ -9832,9 +9816,10 @@ $callback = function () use ($templating, $template, $parameters) {
 return $templating->stream($template->getTemplate(), $parameters);
 };
 $event->setResponse(new StreamedResponse($callback));
+} else {
+$event->setResponse($templating->renderResponse($template->getTemplate(), $parameters));
 }
 $template->setOwner(array());
-$event->setResponse($templating->renderResponse($template->getTemplate(), $parameters));
 }
 public static function getSubscribedEvents()
 {

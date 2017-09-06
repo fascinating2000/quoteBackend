@@ -1,7 +1,12 @@
 # This file is auto-generated during the composer install
 parameters:
-    locale: en
-    env(SYMFONY_SECRET): secret_value_for_symfony_demo_application
-    env(LOG_URL): '%kernel.logs_dir%/%kernel.environment%.log'
-    env(DATABASE_URL): 'sqlite:///%kernel.project_dir%/var/data/blog.sqlite'
-    env(MAILER_URL): 'smtp://localhost:25?encryption=&auth_mode='
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: quoteDB
+    database_user: root
+    database_password: star
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: 89fc2b3e8fbd84a38ea0bc6148cae8f9008e9bca

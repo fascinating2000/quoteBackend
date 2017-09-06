@@ -3,19 +3,19 @@ imports:
 
 framework:
     router:
-        resource: "%kernel.project_dir%/app/config/routing_dev.yml"
+        resource: '%kernel.project_dir%/app/config/routing_dev.yml'
         strict_requirements: true
     profiler: { only_exceptions: false }
 
 web_profiler:
-    toolbar: '%kernel.debug%'
+    toolbar: true
     intercept_redirects: false
 
 monolog:
     handlers:
         main:
             type: stream
-            path: '%env(LOG_URL)%'
+            path: '%kernel.logs_dir%/%kernel.environment%.log'
             level: debug
             channels: ['!event']
         console:
@@ -31,11 +31,11 @@ monolog:
         # uncomment to get logging in your browser
         # you may have to allow bigger header sizes in your Web server configuration
         #firephp:
-        #    type:   firephp
-        #    level:  info
+        #    type: firephp
+        #    level: info
         #chromephp:
-        #    type:   chromephp
-        #    level:  info
+        #    type: chromephp
+        #    level: info
 
-swiftmailer:
-    disable_delivery:  true
+#swiftmailer:
+#    delivery_addresses: ['me@example.com']

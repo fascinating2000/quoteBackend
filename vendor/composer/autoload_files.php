@@ -14,10 +14,5 @@ return array(
     '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => $vendorDir . '/symfony/polyfill-mbstring/bootstrap.php',
     '6a47392539ca2329373e0d33e1dba053' => $vendorDir . '/symfony/polyfill-intl-icu/bootstrap.php',
     '32dcc8afd4335739640db7d200c1971d' => $vendorDir . '/symfony/polyfill-apcu/bootstrap.php',
-    'e40631d46120a9c38ea139981f8dab26' => $vendorDir . '/ircmaxell/password-compat/lib/password.php',
-    '25072dd6e2470089de65ae7bf11d3109' => $vendorDir . '/symfony/polyfill-php72/bootstrap.php',
-    'edc6464955a37aa4d5fbf39d40fb6ee7' => $vendorDir . '/symfony/polyfill-php55/bootstrap.php',
-    '3e2471375464aac821502deb0ac64275' => $vendorDir . '/symfony/polyfill-php54/bootstrap.php',
-    '2cffec82183ee1cea088009cef9a6fc3' => $vendorDir . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
-    '7ada9adbcedc88a0160d226e64d971d2' => $vendorDir . '/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php',
+    '719971e375036615a0685b6fb054583d' => $vendorDir . '/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php',
 );

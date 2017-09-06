@@ -11,9 +11,10 @@
 
 namespace AppBundle\Form\DataTransformer;
 
-use AppBundle\Entity\Tag;
+use AppBundle\Entity\Author;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Yaml\Tests\A;
 
 /**
  * This data transformer is used to translate the array of tags into a comma separated format
@@ -42,7 +43,7 @@ class TagArrayToStringTransformer implements DataTransformerInterface
         // Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer::transform()
         // The value returned is a string that concatenates the string representation of those objects
 
-        /* @var Tag[] $array */
+        /* @var Author[] $array */
         return implode(',', $array);
     }
 
@@ -58,14 +59,14 @@ class TagArrayToStringTransformer implements DataTransformerInterface
         $names = array_filter(array_unique(array_map('trim', explode(',', $string))));
 
         // Get the current tags and find the new ones that should be created.
-        $tags = $this->manager->getRepository(Tag::class)->findBy([
-            'name' => $names,
+        $authors = $this->manager->getRepository(Author::class)->findBy([
+            'authorName' => $names,
         ]);
-        $newNames = array_diff($names, $tags);
+        $newNames = array_diff($names, $authors);
         foreach ($newNames as $name) {
-            $tag = new Tag();
-            $tag->setName($name);
-            $tags[] = $tag;
+            $author = new Author();
+            $author->setAuthorName($name);
+            $authors[] = $author;
 
             // There's no need to persist these new tags because Doctrine does that automatically
             // thanks to the cascade={"persist"} option in the AppBundle\Entity\Post::$tags property.
@@ -73,6 +74,6 @@ class TagArrayToStringTransformer implements DataTransformerInterface
 
         // Return an array of tags to transform them back into a Doctrine Collection.
         // See Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer::reverseTransform()
-        return $tags;
+        return $authors;
     }
 }
