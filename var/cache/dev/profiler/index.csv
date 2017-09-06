@@ -1,0 +1,14 @@
+be5360,127.0.0.1,GET,http://localhost:8000/,1504544367,,200
+10a470,127.0.0.1,GET,http://localhost:8000/en/admin/post/,1504544373,,302
+2f71f8,127.0.0.1,GET,http://localhost:8000/_fragment?_path=_locale%3Den%26_format%3Dhtml%26_controller%3DFrameworkBundle%253ATemplate%253Atemplate,1504544373,1ed8f0,200
+1ed8f0,127.0.0.1,GET,http://localhost:8000/en/login,1504544373,,200
+813666,127.0.0.1,POST,http://localhost:8000/en/login,1504544553,,302
+aeb4f2,127.0.0.1,GET,http://localhost:8000/_fragment?_path=_locale%3Den%26_format%3Dhtml%26_controller%3DFrameworkBundle%253ATemplate%253Atemplate,1504544553,d6503f,200
+d6503f,127.0.0.1,GET,http://localhost:8000/en/login,1504544553,,200
+74c279,127.0.0.1,GET,http://localhost:8000/,1504544563,,200
+cf3000,127.0.0.1,GET,http://localhost:8000/en/admin/post/,1504544564,,302
+11a7a6,127.0.0.1,GET,http://localhost:8000/_fragment?_path=_locale%3Den%26_format%3Dhtml%26_controller%3DFrameworkBundle%253ATemplate%253Atemplate,1504544564,ace457,200
+ace457,127.0.0.1,GET,http://localhost:8000/en/login,1504544564,,200
+b1fd12,127.0.0.1,POST,http://localhost:8000/en/login,1504544569,,302
+ea972a,127.0.0.1,GET,http://localhost:8000/_fragment?_path=_locale%3Den%26_format%3Dhtml%26_controller%3DFrameworkBundle%253ATemplate%253Atemplate,1504544569,296189,200
+296189,127.0.0.1,GET,http://localhost:8000/en/login,1504544569,,200
