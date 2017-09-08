@@ -15,20 +15,20 @@ class __TwigTemplate_56de1f994221d1f090a22e174d77c628b9fab48c062fb95a88d9cca29f3
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $__internal_2aab5f3ad47cd459f8a281c914c7adc86a0743fdfbf783b47911cd3dd56d5d85 = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
-        $__internal_2aab5f3ad47cd459f8a281c914c7adc86a0743fdfbf783b47911cd3dd56d5d85->enter($__internal_2aab5f3ad47cd459f8a281c914c7adc86a0743fdfbf783b47911cd3dd56d5d85_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "@Twig/images/icon-minus-square-o.svg"));
+        $__internal_76c4f30c614526da16f8f898ab88371a28f295c1472e954e0426a5c196f66293 = $this->env->getExtension("Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension");
+        $__internal_76c4f30c614526da16f8f898ab88371a28f295c1472e954e0426a5c196f66293->enter($__internal_76c4f30c614526da16f8f898ab88371a28f295c1472e954e0426a5c196f66293_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "@Twig/images/icon-minus-square-o.svg"));
 
-        $__internal_8c342f274ff9d0450499969033e7e1a550a03bbffb8018fd1ac87f531682090e = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
-        $__internal_8c342f274ff9d0450499969033e7e1a550a03bbffb8018fd1ac87f531682090e->enter($__internal_8c342f274ff9d0450499969033e7e1a550a03bbffb8018fd1ac87f531682090e_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "@Twig/images/icon-minus-square-o.svg"));
+        $__internal_02a813fa6cd3e7c900de222705e2e7e9714c0c60203d98095bbba3d19c3f24b1 = $this->env->getExtension("Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension");
+        $__internal_02a813fa6cd3e7c900de222705e2e7e9714c0c60203d98095bbba3d19c3f24b1->enter($__internal_02a813fa6cd3e7c900de222705e2e7e9714c0c60203d98095bbba3d19c3f24b1_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "@Twig/images/icon-minus-square-o.svg"));
 
         // line 1
         echo "<svg width=\"1792\" height=\"1792\" viewBox=\"0 0 1792 1792\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1344 800v64q0 14-9 23t-23 9H480q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h832q14 0 23 9t9 23zm128 448V416q0-66-47-113t-113-47H480q-66 0-113 47t-47 113v832q0 66 47 113t113 47h832q66 0 113-47t47-113zm128-832v832q0 119-84.5 203.5T1312 1536H480q-119 0-203.5-84.5T192 1248V416q0-119 84.5-203.5T480 128h832q119 0 203.5 84.5T1600 416z\"/></svg>
 ";
         
-        $__internal_2aab5f3ad47cd459f8a281c914c7adc86a0743fdfbf783b47911cd3dd56d5d85->leave($__internal_2aab5f3ad47cd459f8a281c914c7adc86a0743fdfbf783b47911cd3dd56d5d85_prof);
+        $__internal_76c4f30c614526da16f8f898ab88371a28f295c1472e954e0426a5c196f66293->leave($__internal_76c4f30c614526da16f8f898ab88371a28f295c1472e954e0426a5c196f66293_prof);
 
         
-        $__internal_8c342f274ff9d0450499969033e7e1a550a03bbffb8018fd1ac87f531682090e->leave($__internal_8c342f274ff9d0450499969033e7e1a550a03bbffb8018fd1ac87f531682090e_prof);
+        $__internal_02a813fa6cd3e7c900de222705e2e7e9714c0c60203d98095bbba3d19c3f24b1->leave($__internal_02a813fa6cd3e7c900de222705e2e7e9714c0c60203d98095bbba3d19c3f24b1_prof);
 
     }
 
@@ -53,6 +53,6 @@ class __TwigTemplate_56de1f994221d1f090a22e174d77c628b9fab48c062fb95a88d9cca29f3
     public function getSourceContext()
     {
         return new Twig_Source("<svg width=\"1792\" height=\"1792\" viewBox=\"0 0 1792 1792\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1344 800v64q0 14-9 23t-23 9H480q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h832q14 0 23 9t9 23zm128 448V416q0-66-47-113t-113-47H480q-66 0-113 47t-47 113v832q0 66 47 113t113 47h832q66 0 113-47t47-113zm128-832v832q0 119-84.5 203.5T1312 1536H480q-119 0-203.5-84.5T192 1248V416q0-119 84.5-203.5T480 128h832q119 0 203.5 84.5T1600 416z\"/></svg>
-", "@Twig/images/icon-minus-square-o.svg", "/home/reinhold/Documents/Work/Vlaz/quotesBackend/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/views/images/icon-minus-square-o.svg");
+", "@Twig/images/icon-minus-square-o.svg", "/home/reinhold/Documents/Work/Working_Github/quoteBackend/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/views/images/icon-minus-square-o.svg");
     }
 }

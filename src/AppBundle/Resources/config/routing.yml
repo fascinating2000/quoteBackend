@@ -1,7 +1,7 @@
 app_author:
     resource: "@AppBundle/Resources/config/routing/author.yml"
-    prefix:   /author
+    prefix:   /authors
 app_quote:
     resource: "@AppBundle/Resources/config/routing/quote.yml"
-    prefix:   /quote
+    prefix:   /
 

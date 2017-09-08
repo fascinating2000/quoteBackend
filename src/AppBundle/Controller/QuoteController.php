@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Author;
 use AppBundle\Entity\Quote;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -21,96 +22,178 @@ class QuoteController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $quotes = $this->getDoctrine()
+            ->getRepository('AppBundle:Quote')
+            ->findAll();
 
-        $quotes = $em->getRepository('AppBundle:Quote')->findAll();
+        $response = $this->get('serializer')->serialize($quotes, 'json');
 
-        return $this->render('quote/index.html.twig', array(
-            'quotes' => $quotes,
-        ));
+        return $this->json(json_decode($response, true));
+    }
+
+    /**
+     * Generate a random quote.
+     * @Route("/quoteRandom", name="quote_random")
+     * @Method("GET")
+     */
+    public function randomAction()
+    {
+        $quotes = $this->getDoctrine()
+            ->getRepository('AppBundle:Quote')
+            ->findAll();
+
+        $count = count($quotes);
+        $rand = rand(0, $count-1);
+
+        $response = $this->get('serializer')->serialize($quotes[$rand], 'json');
+
+        return $this->json(json_decode($response, true));
+    }
+
+    /**
+     * get a quote width quote_id.
+     * @Route("/quote/{quote_id}", name="quote_pull")
+     * @Method("GET")
+     */
+    public function pullAction($quote_id)
+    {
+        $quotes = $this->getDoctrine()
+            ->getRepository('AppBundle:Quote')
+            ->find($quote_id);
+
+        $response = $this->get('serializer')->serialize($quotes, 'json');
+
+        return $this->json(json_decode($response, true));
     }
 
     /**
      * Creates a new quote entity.
-     * @Route("/quote/new", name="quote_new")
-     * @Method({"GET", "POST"})
+     * @Route("/quote", name="quote_new")
+     * @Method("POST")
      */
     public function newAction(Request $request)
     {
-        $quote = new Quote();
-        $form = $this->createForm('AppBundle\Form\QuoteType', $quote);
-        $form->handleRequest($request);
+        $authorName = $request->request->get('authorName');
+        $quoteContent = $request->request->get('quoteContent');
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if (empty($authorName) || empty($quoteContent))
+            return $this->json(array('status' => 'Parameters are incorrect.', 'statusCode' => 400));
+
+        $author = $this->getDoctrine()
+            ->getRepository('AppBundle:Author')
+            ->findOneBy(array('authorName' => $authorName));
+
+        if (!empty($author)) {
+            $quote = new Quote();
+            $quote->setQuoteContent($quoteContent);
+            $quote->setAuthor($author);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($quote);
             $em->flush();
+        }
+        else {
+            $authorNew = new Author();
+            $authorNew->setAuthorName($authorName);
 
-            return $this->redirectToRoute('quote_show', array('id' => $quote->getId()));
+            $quote = new Quote();
+            $quote->setQuoteContent($quoteContent);
+            $quote->setAuthor($authorNew);
+
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($authorNew);
+            $em->persist($quote);
+            $em->flush();
         }
 
-        return $this->render('quote/new.html.twig', array(
-            'quote' => $quote,
-            'form' => $form->createView(),
-        ));
+        return $this->json(array('status' => 'success', 'statusCode' => 200));
     }
 
     /**
      * Finds and displays a quote entity.
-     * @Route("/quote/{id}/show", requirements={"id": "\d+"}, name="quote_show")
+     * @Route("/author/{author_id}", name="quote_show")
      * @Method("GET")
      */
-    public function showAction(Quote $quote)
+    public function showAction($author_id)
     {
-        $deleteForm = $this->createDeleteForm($quote);
+        $author = $this->getDoctrine()
+            ->getRepository('AppBundle:Author')
+            ->find($author_id);
 
-        return $this->render('quote/show.html.twig', array(
-            'quote' => $quote,
-            'delete_form' => $deleteForm->createView(),
-        ));
+        $quotes = $this->getDoctrine()
+            ->getRepository('AppBundle:Quote')
+            ->findBy(array('author' => $author));
+
+        $response = $this->get('serializer')->serialize($quotes, 'json');
+
+        return $this->json(json_decode($response, true));
     }
 
     /**
      * Displays a form to edit an existing quote entity.
-     * @Route("/quote/{id}/edit", requirements={"id": "\d+"}, name="quote_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/quote/{quote_id}", name="quote_edit")
+     * @Method({"POST", "PUT", "PATCH"})
      */
-    public function editAction(Request $request, Quote $quote)
+    public function editAction(Request $request, $quote_id)
     {
-        $deleteForm = $this->createDeleteForm($quote);
-        $editForm = $this->createForm('AppBundle\Form\QuoteType', $quote);
-        $editForm->handleRequest($request);
+        $authorName = $request->request->get('authorName');
+        $quoteContent = $request->request->get('quoteContent');
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('quote_edit', array('id' => $quote->getId()));
+        if (empty($authorName) || empty($quoteContent)) {
+            return $this->json(array('status' => 'Parameters are incorrect.', 'statusCode' => 400));
         }
 
-        return $this->render('quote/edit.html.twig', array(
-            'quote' => $quote,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        $author = $this->getDoctrine()
+            ->getRepository('AppBundle:Author')
+            ->findOneBy(array('authorName' => $authorName));
+
+        $quote = $this->getDoctrine()
+            ->getRepository('AppBundle:Quote')
+            ->find($quote_id);
+
+        if (!empty($author))
+        {
+            $quote->setQuoteContent($quoteContent);
+            $quote->setAuthor($author);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($quote);
+            $em->flush();
+        } else
+        {
+            $authorNew = new Author();
+            $authorNew->setAuthorName($authorName);
+
+            $quote->setQuoteContent($quoteContent);
+            $quote->setAuthor($authorNew);
+
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($authorNew);
+            $em->persist($quote);
+            $em->flush();
+        }
+
+        return $this->json(array('status' => 'success', 'statusCode' => 200));
     }
 
     /**
      * Deletes a quote entity.
-     * @Route("/quote/{id}/delete", name="quote_delete")
+     * @Route("/quote/{quote_id}", name="quote_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, Quote $quote)
+    public function deleteAction(Request $request, $quote_id)
     {
-        $form = $this->createDeleteForm($quote);
-        $form->handleRequest($request);
+        $quote = $this->getDoctrine()
+            ->getRepository('AppBundle:Quote')
+            ->find($quote_id);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($quote);
-            $em->flush();
-        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($quote);
+        $em->flush();
 
-        return $this->redirectToRoute('quote_index');
+        return $this->json(array('status' => 'success', 'statusCode' => 200));
     }
 
     /**

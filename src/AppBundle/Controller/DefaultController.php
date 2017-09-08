@@ -15,6 +15,7 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $this->createAction();
         // replace this example code with whatever you need
         return $this->render('default/index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
@@ -24,24 +25,30 @@ class DefaultController extends Controller
     public function createAction()
     {
         $author = new Author();
-        $author->setAuthorName('John');
+        $author->setAuthorName('General George S. Patton');
 
         $quote = new Quote();
+        $quote->setQuoteContent('If a man does his best, what else is there?');
         $quote->setAuthor($author);
-        $quote->setQuoteContent('This is entire life!');
 
         $quote1 = new Quote();
+        $quote1->setQuoteContent('A pint of sweat saves a gallon of blood.');
         $quote1->setAuthor($author);
-        $quote1->setQuoteContent('This is entire life1!');
+
+
+        $author1 = new Author();
+        $author1->setAuthorName('Mark Twain');
 
         $quote2 = new Quote();
-        $quote2->setAuthor($author);
-        $quote2->setQuoteContent('This is entire life2!');
+        $quote2->setQuoteContent('A pint of sweat saves a gallon of blood.');
+        $quote2->setAuthor($author1);
+
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($author);
         $em->persist($quote);
         $em->persist($quote1);
+        $em->persist($author1);
         $em->persist($quote2);
         $em->flush();
     }

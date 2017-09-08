@@ -1,24 +1,34 @@
 quote_index:
-    path:     /
+    path:     /quote
     defaults: { _controller: "AppBundle:Quote:index" }
     methods:  GET
 
 quote_show:
-    path:     /{id}/show
+    path:     /author/{author_id}
     defaults: { _controller: "AppBundle:Quote:show" }
     methods:  GET
 
+quote_pull:
+    path:     /quote/{quote_id}
+    defaults: { _controller: "AppBundle:Quote:pull" }
+    methods:  GET
+
 quote_new:
-    path:     /new
+    path:     /quote
     defaults: { _controller: "AppBundle:Quote:new" }
-    methods:  [GET, POST]
+    methods:  [POST]
 
 quote_edit:
-    path:     /{id}/edit
+    path:     /quote/{quote_id}
     defaults: { _controller: "AppBundle:Quote:edit" }
-    methods:  [GET, POST]
+    methods:  [POST, PUT, PATCH]
 
 quote_delete:
-    path:     /{id}/delete
+    path:     /quote/{quote_id}
     defaults: { _controller: "AppBundle:Quote:delete" }
     methods:  DELETE
+
+quote_random:
+    path:     /quoteRandom
+    defaults: { _controller: "AppBundle:Quote:random" }
+    methods:  GET

@@ -108,9 +108,9 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
 
         }
 
-        elseif (0 === strpos($pathinfo, '/author')) {
+        elseif (0 === strpos($pathinfo, '/authors')) {
             // author_index
-            if ('/author' === $pathinfo) {
+            if ('/authors' === $pathinfo) {
                 if ('GET' !== $canonicalMethod) {
                     $allow[] = 'GET';
                     goto not_author_index;
@@ -121,9 +121,9 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             not_author_index:
 
             // author_new
-            if ('/author/new' === $pathinfo) {
-                if (!in_array($canonicalMethod, array('GET', 'POST'))) {
-                    $allow = array_merge($allow, array('GET', 'POST'));
+            if ('/authors' === $pathinfo) {
+                if ('POST' !== $canonicalMethod) {
+                    $allow[] = 'POST';
                     goto not_author_new;
                 }
 
@@ -132,7 +132,7 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             not_author_new:
 
             // author_show
-            if (preg_match('#^/author/(?P<id>\\d+)/show$#s', $pathinfo, $matches)) {
+            if (preg_match('#^/authors/(?P<author_id>[^/]++)$#s', $pathinfo, $matches)) {
                 if ('GET' !== $canonicalMethod) {
                     $allow[] = 'GET';
                     goto not_author_show;
@@ -143,9 +143,9 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             not_author_show:
 
             // author_edit
-            if (preg_match('#^/author/(?P<id>\\d+)/edit$#s', $pathinfo, $matches)) {
-                if (!in_array($canonicalMethod, array('GET', 'POST'))) {
-                    $allow = array_merge($allow, array('GET', 'POST'));
+            if (preg_match('#^/authors/(?P<author_id>[^/]++)$#s', $pathinfo, $matches)) {
+                if (!in_array($requestMethod, array('POST', 'PUT', 'PATCH'))) {
+                    $allow = array_merge($allow, array('POST', 'PUT', 'PATCH'));
                     goto not_author_edit;
                 }
 
@@ -154,7 +154,7 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             not_author_edit:
 
             // author_delete
-            if (preg_match('#^/author/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
+            if (preg_match('#^/authors/(?P<author_id>[^/]++)$#s', $pathinfo, $matches)) {
                 if ('DELETE' !== $canonicalMethod) {
                     $allow[] = 'DELETE';
                     goto not_author_delete;
@@ -165,6 +165,17 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             not_author_delete:
 
         }
+
+        // quote_show
+        if (0 === strpos($pathinfo, '/author') && preg_match('#^/author/(?P<author_id>[^/]++)$#s', $pathinfo, $matches)) {
+            if ('GET' !== $canonicalMethod) {
+                $allow[] = 'GET';
+                goto not_quote_show;
+            }
+
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'quote_show')), array (  '_controller' => 'AppBundle\\Controller\\QuoteController::showAction',));
+        }
+        not_quote_show:
 
         // homepage
         if ('' === $trimmedPathinfo) {
@@ -187,10 +198,32 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             }
             not_quote_index:
 
+            // quote_random
+            if ('/quoteRandom' === $pathinfo) {
+                if ('GET' !== $canonicalMethod) {
+                    $allow[] = 'GET';
+                    goto not_quote_random;
+                }
+
+                return array (  '_controller' => 'AppBundle\\Controller\\QuoteController::randomAction',  '_route' => 'quote_random',);
+            }
+            not_quote_random:
+
+            // quote_pull
+            if (preg_match('#^/quote/(?P<quote_id>[^/]++)$#s', $pathinfo, $matches)) {
+                if ('GET' !== $canonicalMethod) {
+                    $allow[] = 'GET';
+                    goto not_quote_pull;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'quote_pull')), array (  '_controller' => 'AppBundle\\Controller\\QuoteController::pullAction',));
+            }
+            not_quote_pull:
+
             // quote_new
-            if ('/quote/new' === $pathinfo) {
-                if (!in_array($canonicalMethod, array('GET', 'POST'))) {
-                    $allow = array_merge($allow, array('GET', 'POST'));
+            if ('/quote' === $pathinfo) {
+                if ('POST' !== $canonicalMethod) {
+                    $allow[] = 'POST';
                     goto not_quote_new;
                 }
 
@@ -198,21 +231,10 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             }
             not_quote_new:
 
-            // quote_show
-            if (preg_match('#^/quote/(?P<id>\\d+)/show$#s', $pathinfo, $matches)) {
-                if ('GET' !== $canonicalMethod) {
-                    $allow[] = 'GET';
-                    goto not_quote_show;
-                }
-
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'quote_show')), array (  '_controller' => 'AppBundle\\Controller\\QuoteController::showAction',));
-            }
-            not_quote_show:
-
             // quote_edit
-            if (preg_match('#^/quote/(?P<id>\\d+)/edit$#s', $pathinfo, $matches)) {
-                if (!in_array($canonicalMethod, array('GET', 'POST'))) {
-                    $allow = array_merge($allow, array('GET', 'POST'));
+            if (preg_match('#^/quote/(?P<quote_id>[^/]++)$#s', $pathinfo, $matches)) {
+                if (!in_array($requestMethod, array('POST', 'PUT', 'PATCH'))) {
+                    $allow = array_merge($allow, array('POST', 'PUT', 'PATCH'));
                     goto not_quote_edit;
                 }
 
@@ -221,7 +243,7 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             not_quote_edit:
 
             // quote_delete
-            if (preg_match('#^/quote/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
+            if (preg_match('#^/quote/(?P<quote_id>[^/]++)$#s', $pathinfo, $matches)) {
                 if ('DELETE' !== $canonicalMethod) {
                     $allow[] = 'DELETE';
                     goto not_quote_delete;

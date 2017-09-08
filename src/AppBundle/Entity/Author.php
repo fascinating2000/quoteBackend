@@ -40,17 +40,17 @@ class Author
 
     private $createdAt;
 
-    /**
-     * @var Quote[]|ArrayCollection
-     *
-     * @ORM\OneToMany(
-     *      targetEntity="AppBundle\Entity\Quote",
-     *      mappedBy="author",
-     *      orphanRemoval=true
-     * )
-     */
-
-    private $quotes;
+//    /**
+//     * @var Quote[]|ArrayCollection
+//     *
+//     * @ORM\OneToMany(
+//     *      targetEntity="AppBundle\Entity\Quote",
+//     *      mappedBy="author",
+//     *      orphanRemoval=true
+//     * )
+//     */
+//
+//    private $quotes;
 
     public function __construct()
     {
@@ -83,22 +83,22 @@ class Author
         $this->createdAt = $createAt;
     }
 
-    public function getQuotes()
-    {
-        return $this->quotes;
-    }
-
-    public function addQuote(Quote $quote)
-    {
-        $quote->setAuthor($this);
-        if (!$this->quotes->contains($quote)) {
-            $this->quotes->add($quote);
-        }
-    }
-
-    public function removeQuote(Quote $quote)
-    {
-        $quote->setAuthor(null);
-        $this->quotes->removeElement($quote);
-    }
+//    public function getQuotes()
+//    {
+//        return $this->quotes;
+//    }
+//
+//    public function addQuote(Quote $quote)
+//    {
+//        $quote->setAuthor($this);
+//        if (!$this->quotes->contains($quote)) {
+//            $this->quotes->add($quote);
+//        }
+//    }
+//
+//    public function removeQuote(Quote $quote)
+//    {
+//        $quote->setAuthor(null);
+//        $this->quotes->removeElement($quote);
+//    }
 }

@@ -64,10 +64,10 @@ class Author extends \AppBundle\Entity\Author implements \Doctrine\ORM\Proxy\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'AppBundle\\Entity\\Author' . "\0" . 'id', '' . "\0" . 'AppBundle\\Entity\\Author' . "\0" . 'authorName', '' . "\0" . 'AppBundle\\Entity\\Author' . "\0" . 'createdDate', '' . "\0" . 'AppBundle\\Entity\\Author' . "\0" . 'updatedDate', '' . "\0" . 'AppBundle\\Entity\\Author' . "\0" . 'quotes'];
+            return ['__isInitialized__', '' . "\0" . 'AppBundle\\Entity\\Author' . "\0" . 'id', '' . "\0" . 'AppBundle\\Entity\\Author' . "\0" . 'authorName', '' . "\0" . 'AppBundle\\Entity\\Author' . "\0" . 'createdAt'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'AppBundle\\Entity\\Author' . "\0" . 'id', '' . "\0" . 'AppBundle\\Entity\\Author' . "\0" . 'authorName', '' . "\0" . 'AppBundle\\Entity\\Author' . "\0" . 'createdDate', '' . "\0" . 'AppBundle\\Entity\\Author' . "\0" . 'updatedDate', '' . "\0" . 'AppBundle\\Entity\\Author' . "\0" . 'quotes'];
+        return ['__isInitialized__', '' . "\0" . 'AppBundle\\Entity\\Author' . "\0" . 'id', '' . "\0" . 'AppBundle\\Entity\\Author' . "\0" . 'authorName', '' . "\0" . 'AppBundle\\Entity\\Author' . "\0" . 'createdAt'];
     }
 
     /**
@@ -176,12 +176,16 @@ class Author extends \AppBundle\Entity\Author implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
-    public function setAuthorName($authorName)
+    public function getId()
     {
+        if ($this->__isInitialized__ === false) {
+            return (int)  parent::getId();
+        }
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAuthorName', [$authorName]);
 
-        return parent::setAuthorName($authorName);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
+
+        return parent::getId();
     }
 
     /**
@@ -193,6 +197,39 @@ class Author extends \AppBundle\Entity\Author implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAuthorName', []);
 
         return parent::getAuthorName();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAuthorName($authorName)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAuthorName', [$authorName]);
+
+        return parent::setAuthorName($authorName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreatedAt()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedAt', []);
+
+        return parent::getCreatedAt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setCreatedAt(\DateTime $createAt)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCreatedAt', [$createAt]);
+
+        return parent::setCreatedAt($createAt);
     }
 
 }

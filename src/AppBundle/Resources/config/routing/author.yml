@@ -4,21 +4,21 @@ author_index:
     methods:  GET
 
 author_show:
-    path:     /{id}/show
+    path:     /{author_id}
     defaults: { _controller: "AppBundle:Author:show" }
     methods:  GET
 
 author_new:
-    path:     /new
+    path:     /
     defaults: { _controller: "AppBundle:Author:new" }
-    methods:  [GET, POST]
+    methods:  POST
 
 author_edit:
-    path:     /{id}/edit
+    path:     /{author_id}
     defaults: { _controller: "AppBundle:Author:edit" }
-    methods:  [GET, POST]
+    methods:  [POST, PUT, PATCH]
 
 author_delete:
-    path:     /{id}/delete
+    path:     /{author_id}
     defaults: { _controller: "AppBundle:Author:delete" }
     methods:  DELETE
