@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Quote controller.
@@ -73,11 +74,13 @@ class QuoteController extends Controller
      */
     public function newAction(Request $request)
     {
+        $response = new Response();
+
         $authorName = $request->request->get('authorName');
         $quoteContent = $request->request->get('quoteContent');
 
         if (empty($authorName) || empty($quoteContent))
-            return $this->json(array('status' => 'Parameters are incorrect.', 'statusCode' => 400));
+            return $response->setStatusCode(Response::HTTP_NO_CONTENT);
 
         $author = $this->getDoctrine()
             ->getRepository('AppBundle:Author')
@@ -107,7 +110,7 @@ class QuoteController extends Controller
             $em->flush();
         }
 
-        return $this->json(array('status' => 'success', 'statusCode' => 200));
+        return $response->setStatusCode(Response::HTTP_OK);
     }
 
     /**
@@ -137,11 +140,13 @@ class QuoteController extends Controller
      */
     public function editAction(Request $request, $quote_id)
     {
+        $response = new Response();
+
         $authorName = $request->request->get('authorName');
         $quoteContent = $request->request->get('quoteContent');
 
         if (empty($authorName) || empty($quoteContent)) {
-            return $this->json(array('status' => 'Parameters are incorrect.', 'statusCode' => 400));
+            return $response->setStatusCode(Response::HTTP_NO_CONTENT);
         }
 
         $author = $this->getDoctrine()
@@ -175,7 +180,7 @@ class QuoteController extends Controller
             $em->flush();
         }
 
-        return $this->json(array('status' => 'success', 'statusCode' => 200));
+        return $response->setStatusCode(Response::HTTP_OK);
     }
 
     /**
@@ -185,6 +190,8 @@ class QuoteController extends Controller
      */
     public function deleteAction(Request $request, $quote_id)
     {
+        $response = new Response();
+
         $quote = $this->getDoctrine()
             ->getRepository('AppBundle:Quote')
             ->find($quote_id);
@@ -193,7 +200,7 @@ class QuoteController extends Controller
         $em->remove($quote);
         $em->flush();
 
-        return $this->json(array('status' => 'success', 'statusCode' => 200));
+        return $response->setStatusCode(Response::HTTP_OK);
     }
 
     /**

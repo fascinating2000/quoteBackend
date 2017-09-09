@@ -2,3 +2,5 @@ fcffe0,127.0.0.1,GET,http://127.0.0.1:8000/quoteRandom,1504903309,,200
 ecd4df,127.0.0.1,GET,http://127.0.0.1:8000/quoteRandomsd,1504903339,131437,200
 131437,127.0.0.1,GET,http://127.0.0.1:8000/quoteRandomsd,1504903339,,404
 09bfd0,127.0.0.1,GET,http://127.0.0.1:8000/quote,1504904083,,200
+29a1d2,127.0.0.1,GET,http://localhost:8000/authors/1,1504923132,,200
+13bf63,127.0.0.1,GET,http://localhost:8000/authors,1504923137,,200

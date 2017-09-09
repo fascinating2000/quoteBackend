@@ -7,6 +7,7 @@ use Doctrine\ORM\Query;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -38,10 +39,12 @@ class AuthorController extends Controller
      */
     public function newAction(Request $request)
     {
+        $response = new Response();
+
         $authorName = $request->request->get('authorName');
 
         if (empty($authorName))
-            return $this->json(array('status' => 'Parameters are incorrect.'));
+            return $response->setStatusCode(Response::HTTP_NO_CONTENT);
 
         $author = new Author();
         $author->setAuthorName($authorName);
@@ -50,7 +53,10 @@ class AuthorController extends Controller
 
         $em->flush();
 
-        return $this->json(array('status' => 'success'));
+
+        $response->setStatusCode(Response::HTTP_CREATED);
+
+        return $response;
     }
 
     /**
@@ -76,10 +82,12 @@ class AuthorController extends Controller
      */
     public function editAction(Request $request, $author_id)
     {
+        $response = new Response();
+
         $authorName = $request->request->get('authorName');
 
         if (empty($authorName))
-            return $this->json(array('status' => 'Parameters are incorrect.'));
+            return $response->setStatusCode(Response::HTTP_NO_CONTENT);
 
         $author = $this->getDoctrine()
             ->getRepository('AppBundle:Author')
@@ -90,7 +98,7 @@ class AuthorController extends Controller
 
         $em->flush();
 
-        return $this->json(array('status' => 'success'));
+        return $response->setStatusCode(Response::HTTP_OK);
     }
 
     /**
